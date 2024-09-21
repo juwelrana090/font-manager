@@ -4,11 +4,10 @@ backend/node_modules/
 backend/npm-debug.log
 backend/yarn-error.log
 backend/.env
-backend.phpunit.result.cache
+backend/.phpunit.result.cache
 backend/storage/*.key
 backend/public/hot
 backend/public/storage
-backend/storage/*.key
 backend/Homestead.yaml
 backend/Homestead.json
 backend/.vagrant
@@ -37,25 +36,17 @@ frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
 
-# testing
-frontend/coverage
-
-# Next.js build output
-frontend/.next/
+# Next.js build and production output
 frontend/out/
-
-# production
 frontend/build
+
+# Testing
+frontend/coverage
 
 # Common files
 .DS_Store
 Thumbs.db
 *.log
-
-# OS generated files
-*.swp
-*.swo
-*~
 
 # Compressed files
 *.zip
@@ -68,7 +59,5 @@ Thumbs.db
 *.tar.gz
 *.tar.xz
 *.tar.bz2
-*.tar.7z
-*.tar.xz
 *.tar.lz
 *.tar.lzma
