@@ -7,6 +7,7 @@ backend/.env
 backend/.phpunit.result.cache
 backend/storage/*.key
 backend/public/hot
+backend/public/fonts
 backend/public/storage
 backend/Homestead.yaml
 backend/Homestead.json
