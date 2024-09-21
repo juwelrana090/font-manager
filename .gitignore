@@ -37,8 +37,15 @@ frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
 
+# testing
+frontend/coverage
+
 # Next.js build output
-frontend/.next
+frontend/.next/
+frontend/out/
+
+# production
+frontend/build
 
 # Common files
 .DS_Store
