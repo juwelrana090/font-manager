@@ -1,0 +1,70 @@
+# Laravel (backend)
+backend/vendor/
+backend/node_modules/
+backend/npm-debug.log
+backend/yarn-error.log
+backend/.env
+backend.phpunit.result.cache
+backend/storage/*.key
+backend/public/hot
+backend/public/storage
+backend/storage/*.key
+backend/Homestead.yaml
+backend/Homestead.json
+backend/.vagrant
+
+# Laravel IDE helper files
+backend/.phpstorm.meta.php
+backend/_ide_helper.php
+backend/_ide_helper_models.php
+
+# Laravel generated files
+backend/storage/framework/*
+backend/storage/logs/*
+!backend/storage/framework/.gitignore
+!backend/storage/logs/.gitignore
+
+# Composer generated files
+backend/composer.lock
+
+# Next.js (frontend)
+frontend/.next/
+frontend/out/
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+
+# Common files
+.DS_Store
+Thumbs.db
+*.log
+
+# OS generated files
+*.swp
+*.swo
+*~
+
+# Compressed files
+*.zip
+*.tar
+*.gz
+*.bz2
+*.rar
+*.7z
+*.xz
+*.tar.gz
+*.tar.xz
+*.tar.bz2
+*.tar.7z
+*.tar.xz
+*.tar.lz
+*.tar.lzma
