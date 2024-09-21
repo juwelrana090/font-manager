@@ -29,7 +29,6 @@ backend/composer.lock
 
 # Next.js (frontend)
 frontend/.next/
-frontend/out/
 frontend/node_modules/
 frontend/npm-debug.log
 frontend/yarn-error.log
@@ -39,9 +38,7 @@ frontend/.env.test.local
 frontend/.env.production.local
 
 # Next.js build output
-frontend/.next/
-frontend/out/
-
+frontend/.next
 
 # Common files
 .DS_Store
