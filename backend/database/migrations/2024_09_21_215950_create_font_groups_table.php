@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('font_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); // Name of the font group
             $table->timestamps();
         });
     }

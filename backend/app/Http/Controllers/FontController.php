@@ -71,30 +71,9 @@ class FontController extends Controller
             // Check if a font with the same slug already exists
             $fontExists = Font::where('slug', $fileSlug)->exists();
             if ($fontExists) {
-                $fonts = Cache::remember('fonts_page_' . request('page', 1), 60, function () {
-                    $fonts = Font::latest()->paginate(10, ['id', 'title', 'path']);
-                    $fonts->getCollection()->transform(function ($font) {
-                        $font->font_url = url($font->path);
-                        return $font;
-                    });
-                    return $fonts;
-                });
-
-                // Customize the pagination structure
-                $paginatedData = [
-                    'current_page' => $fonts->currentPage(),
-                    'data' => $fonts->items(),
-                    'from' => $fonts->firstItem(),
-                    'last_page' => $fonts->lastPage(),
-                    'per_page' => $fonts->perPage(),
-                    'to' => $fonts->lastItem(),
-                    'total' => $fonts->total(),
-                ];
-
                 return response()->json([
                     'success' => false,
                     'message' => 'Font already exists',
-                    'fonts' => $paginatedData,
                 ], 409);
             }
 
@@ -115,30 +94,9 @@ class FontController extends Controller
             $fontModel->path = $fileLocation;
             $fontModel->save();
 
-            $fonts = Cache::remember('fonts_page_' . request('page', 1), 60, function () {
-                $fonts = Font::latest()->paginate(10, ['id', 'title', 'path']);
-                $fonts->getCollection()->transform(function ($font) {
-                    $font->font_url = url($font->path);
-                    return $font;
-                });
-                return $fonts;
-            });
-
-            // Customize the pagination structure
-            $paginatedData = [
-                'current_page' => $fonts->currentPage(),
-                'data' => $fonts->items(),
-                'from' => $fonts->firstItem(),
-                'last_page' => $fonts->lastPage(),
-                'per_page' => $fonts->perPage(),
-                'to' => $fonts->lastItem(),
-                'total' => $fonts->total(),
-            ];
-
             return response()->json([
                 'success' => true,
                 'message' => 'Font uploaded successfully',
-                'fonts' => $paginatedData,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -171,31 +129,10 @@ class FontController extends Controller
             // Delete the font record
             $font->delete();
 
-            $fonts = Cache::remember('fonts_page_' . request('page', 1), 60, function () {
-                $fonts = Font::latest()->paginate(10, ['id', 'title', 'path']);
-                $fonts->getCollection()->transform(function ($font) {
-                    $font->font_url = url($font->path);
-                    return $font;
-                });
-                return $fonts;
-            });
-
-            // Customize the pagination structure
-            $paginatedData = [
-                'current_page' => $fonts->currentPage(),
-                'data' => $fonts->items(),
-                'from' => $fonts->firstItem(),
-                'last_page' => $fonts->lastPage(),
-                'per_page' => $fonts->perPage(),
-                'to' => $fonts->lastItem(),
-                'total' => $fonts->total(),
-            ];
-
             // Return the updated font list
             return response()->json([
                 'success' => true,
                 'message' => 'Font deleted successfully',
-                'fonts' => $paginatedData,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
