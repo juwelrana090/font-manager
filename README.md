@@ -136,7 +136,7 @@ Follow the on-screen instructions to complete the installation.
    - Run:
      ```bash
      php artisan key:generate
-     php artisan migrate --seed
+     php artisan migrate
      ```
 
 8. **Configuring Supervisor for Queue Workers (if using queues):**
@@ -166,26 +166,6 @@ Follow the on-screen instructions to complete the installation.
      supervisorctl update
      supervisorctl start laravel-worker:*
      ```
-
-## API Documentation
-
-The API documentation is available at:
-
-[API Documentation URL](https://ecommerce-backend.codingzonebd.com/api/documentation)
-
-## Demo Accounts
-
-You can test the API using the following demo accounts:
-
-| Role    | Email                | Password        |
-|---------|----------------------|-----------------|
-| Admin   | admin@gmail.com       | 12345678Aa      |
-| Seller  | seller@gmail.com      | 12345678Aa      |
-| Customer| customer@gmail.com    | 12345678Aa      |
-
-## Contributing
-
-If you'd like to contribute to this project, please fork the repository and submit a pull request.
 
 ## License
 
