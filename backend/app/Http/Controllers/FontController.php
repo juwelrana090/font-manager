@@ -22,9 +22,20 @@ class FontController extends Controller
             return $fonts;
         });
 
+        // Customize the pagination structure
+        $paginatedData = [
+            'current_page' => $fonts->currentPage(),
+            'data' => $fonts->items(),
+            'from' => $fonts->firstItem(),
+            'last_page' => $fonts->lastPage(),
+            'per_page' => $fonts->perPage(),
+            'to' => $fonts->lastItem(),
+            'total' => $fonts->total(),
+        ];
+
         return [
             'status' => true,
-            'fonts' => $fonts
+            'fonts' => $paginatedData
         ];
     }
 
@@ -69,10 +80,21 @@ class FontController extends Controller
                     return $fonts;
                 });
 
+                // Customize the pagination structure
+                $paginatedData = [
+                    'current_page' => $fonts->currentPage(),
+                    'data' => $fonts->items(),
+                    'from' => $fonts->firstItem(),
+                    'last_page' => $fonts->lastPage(),
+                    'per_page' => $fonts->perPage(),
+                    'to' => $fonts->lastItem(),
+                    'total' => $fonts->total(),
+                ];
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Font already exists',
-                    'fonts' => $fonts,
+                    'fonts' => $paginatedData,
                 ], 409);
             }
 
@@ -102,10 +124,21 @@ class FontController extends Controller
                 return $fonts;
             });
 
+            // Customize the pagination structure
+            $paginatedData = [
+                'current_page' => $fonts->currentPage(),
+                'data' => $fonts->items(),
+                'from' => $fonts->firstItem(),
+                'last_page' => $fonts->lastPage(),
+                'per_page' => $fonts->perPage(),
+                'to' => $fonts->lastItem(),
+                'total' => $fonts->total(),
+            ];
+
             return response()->json([
                 'success' => true,
                 'message' => 'Font uploaded successfully',
-                'fonts' => $fonts,
+                'fonts' => $paginatedData,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -147,11 +180,22 @@ class FontController extends Controller
                 return $fonts;
             });
 
+            // Customize the pagination structure
+            $paginatedData = [
+                'current_page' => $fonts->currentPage(),
+                'data' => $fonts->items(),
+                'from' => $fonts->firstItem(),
+                'last_page' => $fonts->lastPage(),
+                'per_page' => $fonts->perPage(),
+                'to' => $fonts->lastItem(),
+                'total' => $fonts->total(),
+            ];
+
             // Return the updated font list
             return response()->json([
                 'success' => true,
                 'message' => 'Font deleted successfully',
-                'fonts' => $fonts,
+                'fonts' => $paginatedData,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
