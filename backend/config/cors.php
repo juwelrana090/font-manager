@@ -15,9 +15,9 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'fonts/*','sanctum/csrf-cookie'],
-    'allowed_methods' => ['*'],
-    'allowed_origins' => ['localhost:3000', '*.codingzonebd.com', 'font-backend.codingzonebd.com','font.codingzonebd.com'],
+    'paths' => ['api/*', 'fonts/*', 'sanctum/csrf-cookie'],
+    'allowed_methods' => ['GET, POST, PUT, OPTIONS'],
+    'allowed_origins' => ['localhost:3000', '*.codingzonebd.com', 'font-backend.codingzonebd.com', 'font.codingzonebd.com'],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

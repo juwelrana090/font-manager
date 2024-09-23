@@ -6,6 +6,32 @@ interface GetParams {
 
 }
 
+interface UrlQueryParams {
+    params: string;
+    key?: string;
+    value?: string | null
+    keysToRemove?: string[];
+};
+
+export const formUrlQuery = ({ params, key, value, keysToRemove }: UrlQueryParams) => {
+    const currentUrl = qs.parse(params);
+
+    if (keysToRemove) {
+        keysToRemove.forEach((keyToRemove) => {
+            delete currentUrl[keyToRemove];
+        })
+    } else if (key && value) {
+        currentUrl[key] = value;
+    }
+
+    const stringifyUrl = qs.stringifyUrl(
+        { url: window.location.pathname, query: currentUrl },
+        { skipNull: true }
+    )
+
+    return stringifyUrl;
+}
+
 export const getFonts = async (params: GetParams) => {
     const { page } = params;
     let fonts: any = [];
@@ -18,11 +44,14 @@ export const getFonts = async (params: GetParams) => {
     }
 }
 
-export const fontDelete = async (id: string) => {
+export const fontDelete = async (id: number) => {
     try {
-        const font_delete = await fetch(`${apiUrl}/font/${id}`, {
-            method: 'DELETE'
-        });
+        const requestOptions: any = {
+            method: "DELETE",
+            redirect: "follow"
+        };
+
+        const font_delete = await fetch(`${apiUrl}/font/${id}`, requestOptions);
         const result = await font_delete.json();
         return result;
     } catch (error) {
@@ -32,3 +61,5 @@ export const fontDelete = async (id: string) => {
         };
     }
 }
+
+

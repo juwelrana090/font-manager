@@ -1,7 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Space, Table } from 'antd';
+import Swal from 'sweetalert2';
+
+
+import { formUrlQuery, fontDelete, getFonts } from "@/lib/actions";
 
 const { Column } = Table;
 
@@ -16,28 +21,31 @@ interface FontProps {
     fonts?: any;
 }
 
-const FontList = ({ className, fonts }: FontProps) => {
+const FontList = React.memo(({ className, fonts }: FontProps) => {
+
+    const searchPageParams = useSearchParams();
+    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
 
+    const loadedFonts = useMemo<Set<string>>(() => new Set<string>(), []);
 
     const slug = (title: string) => {
         return title
-            .toLowerCase()                     // Convert to lowercase
-            .trim()                            // Remove leading/trailing spaces
-            .replace(/[^a-z0-9 -]/g, '') 
-            .replace(/\s+/g, '-') 
-            .replace(/-+/g, '-')
-    }
-    
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    };
+
     const addFontFace = (fontTitle: string, fontUrl: string) => {
-        if (document.querySelector(`#font-${fontTitle}`)) {
+        if (loadedFonts.has(fontTitle)) {
             return;
         }
-
         const fontStyle = document.createElement('style');
         fontStyle.id = `font-${fontTitle}`;
         fontStyle.innerHTML = `
@@ -49,33 +57,28 @@ const FontList = ({ className, fonts }: FontProps) => {
           }
         `;
         document.head.appendChild(fontStyle);
+        loadedFonts.add(fontTitle);
     };
-
 
     useEffect(() => {
         setLoading(true);
 
-        let fontList: DataType[] = [];
-
-        console.log('fonts', fonts);
-
-
         if (fonts.data) {
-            fonts.data.forEach((font: any) => {
+            const fontList: DataType[] = fonts.data.map((font: any) => {
                 const fontSlug = slug(font.title);
-                fontList.push({
+                addFontFace(fontSlug, font.font_url);
+                return {
                     key: font.id,
                     title: font.title,
                     font_url: font.font_url,
-                });
-
-                addFontFace(fontSlug, font.font_url);
+                };
             });
+
+            setCurrentPage(fonts.current_page);
+            setPageSize(fonts.per_page);
+            setTotal(fonts.total);
+            setData(fontList);
         }
-        setCurrentPage(fonts.current_page);
-        setPageSize(fonts.per_page);
-        setTotal(fonts.total);
-        setData(fontList);
 
         const delay = setTimeout(() => {
             setLoading(false);
@@ -86,6 +89,66 @@ const FontList = ({ className, fonts }: FontProps) => {
     const onPaginationChange = (page: number, pageSize?: number) => {
         setCurrentPage(page);
         if (pageSize) setPageSize(pageSize);
+
+        const newUrl = formUrlQuery({
+            params: searchPageParams.toString(),
+            key: "page",
+            value: page.toString(),
+        });
+        router.push(newUrl, { scroll: false });
+    };
+
+    const handleDelete = (id: number) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const font_delete = await fontDelete(id);
+                if (font_delete.success) {
+                    setLoading(true); // Show loading while fetching updated data
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: font_delete.message,
+                        icon: "success"
+                    });
+
+                    // Fetch the updated fonts after deletion
+                    const fonts = await getFonts({
+                        page: currentPage
+                    });
+
+                    if (fonts?.data) {
+                        const fontList: DataType[] = fonts.data.map((font: any) => {
+                            const fontSlug = slug(font.title);
+                            addFontFace(fontSlug, font.font_url);
+                            return {
+                                key: font.id,
+                                title: font.title,
+                                font_url: font.font_url,
+                            };
+                        });
+
+                        setCurrentPage(fonts.current_page);
+                        setPageSize(fonts.per_page);
+                        setTotal(fonts.total);
+                        setData(fontList);
+                    }
+                    setLoading(false); // Hide loading after fetching
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: font_delete.message,
+                        icon: "error"
+                    });
+                }
+            }
+        });
     };
 
     return (
@@ -117,7 +180,10 @@ const FontList = ({ className, fonts }: FontProps) => {
                     key="action"
                     render={(_: any, record: DataType) => (
                         <Space size="middle" className="flex justify-end">
-                            <span className="text-red-600 hover:text-red-700 text-base font-normal cursor-pointer">
+                            <span
+                                onClick={() => handleDelete(Number(record.key))}
+                                className="text-red-600 hover:text-red-700 text-base font-normal cursor-pointer"
+                            >
                                 Delete
                             </span>
                         </Space>
@@ -126,6 +192,6 @@ const FontList = ({ className, fonts }: FontProps) => {
             </Table>
         </div>
     );
-};
+});
 
 export default FontList;

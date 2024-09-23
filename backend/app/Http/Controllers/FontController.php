@@ -63,13 +63,10 @@ class FontController extends Controller
      */
     public function index()
     {
-        $fonts = Cache::remember('fonts_page_' . request('page', 1), 60, function () {
-            $fonts = Font::latest()->paginate(10, ['id', 'title', 'slug', 'path']);
-            $fonts->getCollection()->transform(function ($font) {
-                $font->font_url = url($font->path);
-                return $font;
-            });
-            return $fonts;
+        $fonts = Font::latest()->paginate(10, ['id', 'title', 'slug', 'path']);
+        $fonts->getCollection()->transform(function ($font) {
+            $font->font_url = url($font->path);
+            return $font;
         });
 
         // Customize the pagination structure
