@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import "./globals.css";
+// redux
+import { ReduxProvider } from "@/redux/provider";
 
 export const metadata: Metadata = {
   title: "Font Manager",
@@ -17,7 +19,11 @@ export default function RootLayout({
       <body
         className="w-screen h-screen"
       >
-        <AntdRegistry>{children}</AntdRegistry>
+        <AntdRegistry>
+          <ReduxProvider>
+            {children}
+          </ReduxProvider>
+        </AntdRegistry>
       </body>
     </html>
   );
