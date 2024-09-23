@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "d3fe340a-b3a9-4385-ae6b-ef0112a4ad4e",
+		"name": "Font Manager Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13055586"
+	},
+	"item": [
+		{
+			"name": "Fonts",
+			"item": [
+				{
+					"name": "Fonts list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/font",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Fonts list",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/font",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Font Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "font",
+									"type": "file",
+									"src": "/C:/Users/juwel/OneDrive/Desktop/Save/dev/Font Pack/big_noodle_titling.ttf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/font/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font",
+								"upload"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Font Upload",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "font",
+											"type": "file",
+											"src": "/C:/Users/juwel/OneDrive/Desktop/Save/dev/Font Pack/big_noodle_titling.ttf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/font/upload",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font",
+										"upload"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Font Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/font/38",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font",
+								"38"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Font Delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/font/38",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font",
+										"38"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Font Group",
+			"item": [
+				{
+					"name": "Get Font-Group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/font-group/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font-group",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Font-Group",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/font-group/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font-group",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Font-Group Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New Group 4\",\r\n    \"fonts\": [5, 7, 8]  // Array of font IDs to be associated with this group\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/font-group/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font-group",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Font-Group Add",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"New Group 4\",\r\n    \"fonts\": [5, 7, 8]  // Array of font IDs to be associated with this group\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/font-group/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font-group",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Font-Group Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/font-group/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font-group",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Font-Group Update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/font-group/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font-group",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "get single font group",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/font-group/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font-group",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get single font group",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/font-group/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font-group",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Font group Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/font-group/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"font-group",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Font group Delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Updated Group Name\",\r\n    \"fonts\": [\r\n        1,\r\n        2,\r\n        3\r\n    ] // Array of font IDs to update the associations\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/font-group/4",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"font-group",
+										"4"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://font-backend.codingzonebd.com/api/v1",
+			"type": "string"
+		}
+	]
+}
