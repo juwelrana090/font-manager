@@ -15,9 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`w-screen h-screen`}
+        className="w-screen h-screen"
       >
-      <AntdRegistry>{children}</AntdRegistry>
+        <AntdRegistry>{children}</AntdRegistry>
       </body>
     </html>
   );

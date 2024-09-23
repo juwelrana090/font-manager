@@ -6,7 +6,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <Navbar />
-            {children}
+            <div className='w-full max-w-screen-xl mx-auto py-1'>
+                {children}
+            </div>
             <Footer />
         </>
     )
