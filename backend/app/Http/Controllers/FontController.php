@@ -8,9 +8,59 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *    title="Fonts Management API",
+ *    version="1.0.0",
+ *    description="API Endpoints for managing fonts",
+ * )
+ * @OA\Server(
+ *      url="http://localhost:8000/api/v1",
+ *      description="Development server"
+ * ),
+ * @OA\PathItem(path="/font")
+ */
 class FontController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/font",
+     *     summary="Retrieve a list of fonts",
+     *     tags={"Fonts"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="The page number to retrieve",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful retrieval of fonts list",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="fonts", type="object",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="title", type="string", example="Example Font"),
+     *                         @OA\Property(property="path", type="string", example="fonts/example-font.ttf"),
+     *                         @OA\Property(property="font_url", type="string", example="http://example.com/fonts/example-font.ttf")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="from", type="integer", example=1),
+     *                 @OA\Property(property="last_page", type="integer", example=10),
+     *                 @OA\Property(property="per_page", type="integer", example=10),
+     *                 @OA\Property(property="to", type="integer", example=10),
+     *                 @OA\Property(property="total", type="integer", example=100)
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
         $fonts = Cache::remember('fonts_page_' . request('page', 1), 60, function () {
@@ -39,6 +89,51 @@ class FontController extends Controller
         ];
     }
 
+    /**
+     * @OA\Post(
+     *     path="/font/upload",
+     *     summary="Upload a new font",
+     *     tags={"Fonts"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="font",
+     *                     description="The TTF font file",
+     *                     type="string",
+     *                     format="binary"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Font uploaded successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Font uploaded successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Font already exists",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Font already exists")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Upload failed",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Font upload failed")
+     *         )
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -108,7 +203,42 @@ class FontController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/font/{id}",
+     *     summary="Delete a font",
+     *     tags={"Fonts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the font to be deleted",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Font deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Font deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Font not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Font not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="An error occurred",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
      */
     public function destroy(Request $request, $id)
     {

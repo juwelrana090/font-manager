@@ -9,9 +9,67 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Schema(
+ *     schema="Font",
+ *     type="object",
+ *     title="Font",
+ *     properties={
+ *         @OA\Property(property="id", type="integer", example=1),
+ *         @OA\Property(property="title", type="string", example="Arial"),
+ *         @OA\Property(property="path", type="string", example="/path/to/font.ttf"),
+ *         @OA\Property(property="font_url", type="string", example="http://example.com/path/to/font.ttf")
+ *     }
+ * )
+ * @OA\Schema(
+ *     schema="FontGroup",
+ *     type="object",
+ *     title="FontGroup",
+ *     properties={
+ *         @OA\Property(property="id", type="integer", example=1),
+ *         @OA\Property(property="name", type="string", example="My Font Group"),
+ *         @OA\Property(
+ *             property="fonts",
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Font")
+ *         )
+ *     }
+ * )
+ */
 
 class FontGroupController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/font-group",
+     *     summary="Get list of font groups",
+     *     tags={"Font Groups"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="font_groups",
+     *                 type="object",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/FontGroup")),
+     *                 @OA\Property(property="from", type="integer", example=1),
+     *                 @OA\Property(property="last_page", type="integer", example=10),
+     *                 @OA\Property(property="per_page", type="integer", example=10),
+     *                 @OA\Property(property="to", type="integer", example=10),
+     *                 @OA\Property(property="total", type="integer", example=100)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -49,6 +107,34 @@ class FontGroupController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/font-group",
+     *     summary="Create a new font group",
+     *     tags={"Font Groups"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="New Font Group"),
+     *             @OA\Property(
+     *                 property="fonts",
+     *                 type="array",
+     *                 @OA\Items(type="integer", example=1)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Font group created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FontGroup")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -79,6 +165,32 @@ class FontGroupController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/font-group/{id}",
+     *     summary="Get a font group by ID",
+     *     tags={"Font Groups"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/FontGroup")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Font group not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function show(FontGroup $fontGroup)
     {
         try {
@@ -111,6 +223,44 @@ class FontGroupController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/font-group/{id}",
+     *     summary="Update a font group",
+     *     tags={"Font Groups"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", example="Updated Font Group"),
+     *             @OA\Property(
+     *                 property="fonts",
+     *                 type="array",
+     *                 @OA\Items(type="integer", example=1)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Font group updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FontGroup")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Font group not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         try {
@@ -155,7 +305,36 @@ class FontGroupController extends Controller
         }
     }
 
-
+    /**
+     * @OA\Delete(
+     *     path="/font-group/{id}",
+     *     summary="Delete a font group",
+     *     tags={"Font Groups"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Font group deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Font group deleted successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Font group not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         try {

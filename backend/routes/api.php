@@ -20,5 +20,4 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api']], function () {
         Route::put('/{id}', [FontGroupController::class, 'update']);
         Route::delete('/{id}', [FontGroupController::class, 'destroy']);
     });
-
 });
