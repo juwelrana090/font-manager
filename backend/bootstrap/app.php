@@ -29,6 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
+
+        $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Handle exceptions as needed
