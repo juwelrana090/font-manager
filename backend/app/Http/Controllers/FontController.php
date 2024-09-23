@@ -17,7 +17,7 @@ use OpenApi\Annotations as OA;
  *    description="API Endpoints for managing fonts",
  * )
  * @OA\Server(
- *      url="http://localhost:8000/api/v1",
+ *      url="https://font-backend.codingzonebd.com/api/v1",
  *      description="Development server"
  * ),
  * @OA\PathItem(path="/font")
