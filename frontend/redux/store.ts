@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from '@reduxjs/toolkit/query'
 import fontSlice from "./slices/fontSlice";
 
 export const store = configureStore({
@@ -8,4 +7,6 @@ export const store = configureStore({
     },
 });
 
-setupListeners(store.dispatch)
+// Types for RootState and AppDispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

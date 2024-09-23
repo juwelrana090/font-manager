@@ -1,5 +1,6 @@
 
 import { getFonts } from "@/lib/actions";
+import FontAdd from "@/components/fonts/FontAdd";
 import FontList from "@/components/fonts/FontList";
 
 interface Props {
@@ -23,7 +24,9 @@ const HomePage = async ({ searchParams }: Props) => {
             Browse a list of Zepto fonts build your font group.
           </p>
         </div>
-        <div className="w-full md:w-6/12"></div>
+        <div className="w-full md:w-6/12">
+          <FontAdd />
+        </div>
 
       </div>
       <div className="w-full">

@@ -44,6 +44,27 @@ export const getFonts = async (params: GetParams) => {
     }
 }
 
+export const fontUpload = async (file: File) => {
+    try {
+        const formdata = new FormData();
+        formdata.append("font", file);
+
+        const requestOptions: any = {
+            method: "POST",
+            body: formdata,
+            redirect: "follow"
+        };
+        const fonts_upload = await fetch(`${apiUrl}/font/upload`, requestOptions);
+        const result = await fonts_upload.json();
+        return result;
+    } catch (error) {
+        return {
+            'success': false,
+            'message': error,
+        };
+    }
+}
+
 export const fontDelete = async (id: number) => {
     try {
         const requestOptions: any = {
@@ -56,7 +77,7 @@ export const fontDelete = async (id: number) => {
         return result;
     } catch (error) {
         return {
-            'status': false,
+            'success': false,
             'message': error,
         };
     }

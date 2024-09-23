@@ -1,22 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    fonts: [],
-    fontGroups: [],
+
+export interface FontState {
+    fontList: any;
+    fontGroupList: any;
+}
+
+const initialState: FontState = {
+    fontList: [],
+    fontGroupList: [],
 };
 
 export const fontSlice = createSlice({
     name: 'fontSlice',
     initialState,
     reducers: {
-        setFonts: (state, action) => {
-            state.fonts = action.payload;
+        setFontList: (state, action) => {
+            state.fontList = action.payload;
         },
-        setFontGroups: (state, action) => {
-            state.fontGroups = action.payload;
+        setFontGroupList: (state, action) => {
+            state.fontGroupList = action.payload;
         },
     },
 });
 
-export const { setFonts, setFontGroups } = fontSlice.actions;
+export const { setFontList, setFontGroupList } = fontSlice.actions;
 export default fontSlice.reducer;

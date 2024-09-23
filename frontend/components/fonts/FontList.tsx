@@ -5,8 +5,15 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Space, Table } from 'antd';
 import Swal from 'sweetalert2';
 
+// Redux
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
+// Types
+import { RootState } from "@/redux/store";
 
 import { formUrlQuery, fontDelete, getFonts } from "@/lib/actions";
+import { setFontList } from '@/redux/slices/fontSlice';
+
 
 const { Column } = Table;
 
@@ -22,9 +29,12 @@ interface FontProps {
 }
 
 const FontList = React.memo(({ className, fonts }: FontProps) => {
-
-    const searchPageParams = useSearchParams();
     const router = useRouter();
+    const dispatch = useAppDispatch();
+    const searchPageParams = useSearchParams();
+    
+    const { fontList } = useAppSelector((state: RootState) => state.font);
+
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<DataType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -60,36 +70,38 @@ const FontList = React.memo(({ className, fonts }: FontProps) => {
         loadedFonts.add(fontTitle);
     };
 
+    const handleGetFonts = async (fonts: any) => {
+        const font_list: DataType[] = fonts?.data.map((font: any) => {
+            const fontSlug = slug(font?.title);
+            addFontFace(fontSlug, font?.font_url);
+            return {
+                key: font?.id,
+                title: font?.title,
+                font_url: font?.font_url,
+            };
+        });
+
+        setCurrentPage(fonts?.current_page);
+        setPageSize(fonts?.per_page);
+        setTotal(fonts?.total);
+        setData(font_list);
+    };
+
+    useEffect(() => {
+        dispatch(setFontList(fonts));
+    }, [fonts]);
+
     useEffect(() => {
         setLoading(true);
-
-        if (fonts.data) {
-            const fontList: DataType[] = fonts.data.map((font: any) => {
-                const fontSlug = slug(font.title);
-                addFontFace(fontSlug, font.font_url);
-                return {
-                    key: font.id,
-                    title: font.title,
-                    font_url: font.font_url,
-                };
-            });
-
-            setCurrentPage(fonts.current_page);
-            setPageSize(fonts.per_page);
-            setTotal(fonts.total);
-            setData(fontList);
-        }
-
+        handleGetFonts(fontList);
         const delay = setTimeout(() => {
             setLoading(false);
         }, 1500);
         return () => clearTimeout(delay);
-    }, [fonts]);
+    }, [fontList]);
 
-    const onPaginationChange = (page: number, pageSize?: number) => {
+    const onPaginationChange = (page: number) => {
         setCurrentPage(page);
-        if (pageSize) setPageSize(pageSize);
-
         const newUrl = formUrlQuery({
             params: searchPageParams.toString(),
             key: "page",
@@ -111,35 +123,26 @@ const FontList = React.memo(({ className, fonts }: FontProps) => {
             if (result.isConfirmed) {
                 const font_delete = await fontDelete(id);
                 if (font_delete.success) {
-                    setLoading(true); // Show loading while fetching updated data
                     Swal.fire({
                         title: "Deleted!",
                         text: font_delete.message,
                         icon: "success"
                     });
 
-                    // Fetch the updated fonts after deletion
                     const fonts = await getFonts({
                         page: currentPage
                     });
 
-                    if (fonts?.data) {
-                        const fontList: DataType[] = fonts.data.map((font: any) => {
-                            const fontSlug = slug(font.title);
-                            addFontFace(fontSlug, font.font_url);
-                            return {
-                                key: font.id,
-                                title: font.title,
-                                font_url: font.font_url,
-                            };
+                    if (fonts.data.length > 0) {
+                        dispatch(setFontList(fonts));
+                    } else {
+                        const newUrl = formUrlQuery({
+                            params: searchPageParams.toString(),
+                            key: "page",
+                            value: ((currentPage - 1) > 0 ? (currentPage - 1) : 1).toString(),
                         });
-
-                        setCurrentPage(fonts.current_page);
-                        setPageSize(fonts.per_page);
-                        setTotal(fonts.total);
-                        setData(fontList);
+                        router.push(newUrl, { scroll: false });
                     }
-                    setLoading(false); // Hide loading after fetching
                 } else {
                     Swal.fire({
                         title: "Error!",
