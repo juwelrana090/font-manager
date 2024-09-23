@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: "Font Manager",
@@ -17,7 +17,7 @@ export default function RootLayout({
       <body
         className={`w-screen h-screen`}
       >
-        {children}
+      <AntdRegistry>{children}</AntdRegistry>
       </body>
     </html>
   );
